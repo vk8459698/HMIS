@@ -92,8 +92,4 @@ HMIS/
 5. Submit a **Pull Request**  
 
 ---
-
-### **📜 License**
-This project is **open-source** and free to use.  
-
 ---
