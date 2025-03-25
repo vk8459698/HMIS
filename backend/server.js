@@ -21,4 +21,8 @@ app.get("/", (req, res) => {
     res.send("Backend is running with ES Modules");
 });
 
+app.get("/test",(req, res) => {
+    res.send("Frontend Connected to Backend");
+})
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
