@@ -1,0 +1,13 @@
+# Node.js dependencies
+node_modules/
+package-lock.json
+
+# Build files
+frontend/dist/
+backend/logs/
+backend/.env
+
+# Vite and cache files
+frontend/.vite/
+.vscode/
+.DS_Store
