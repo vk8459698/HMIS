@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import testRoutes from "./routes/testRoutes.js";
 
 dotenv.config();
 
@@ -24,5 +25,9 @@ app.get("/", (req, res) => {
 app.get("/test",(req, res) => {
     res.send("Frontend Connected to Backend");
 })
+
+app.use("/api/tests", testRoutes);
+
+
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -1,16 +1,14 @@
-import { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import TestPage from "./pages/TestPage";
 
 function App() {
-  const [message, setMessage] = useState("Fetching");
-
-  useEffect(() => {
-    fetch("http://localhost:5000/test")
-      .then(res => res.text()
-    )
-      .then(data => setMessage(data));
-  }, []);
-
-  return <h1>Hospital Management System :: {message}</h1>;
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<TestPage />} />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;
