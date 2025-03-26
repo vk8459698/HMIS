@@ -1,5 +1,5 @@
-import useTest from "../hooks/useTest";
-import TestComponent from "../components/TestComponent";
+import useTest from "../../hooks/useTest";
+import TestComponent from "../../components/TestComponent";
 
 const TestPage = () => {
   const { testData, loading, error } = useTest();
