@@ -9,8 +9,7 @@ A full-stack hospital management system built using **MongoDB, Express.js, React
 ### **📌 Prerequisites**
 Before running the project, ensure you have the following installed:  
 - **Node.js** (Download from [nodejs.org](https://nodejs.org/))  
-- **MongoDB** (Either local installation or [MongoDB Atlas](https://www.mongodb.com/atlas))  
-- **Git** (Optional, but recommended)  
+- **Git** 
 
 ---
 
@@ -41,7 +40,6 @@ Create a `.env` file inside the `backend` folder and add:
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
 ```
-For MongoDB, you can use **MongoDB Atlas** or a local MongoDB server.
 
 ---
 
@@ -49,7 +47,7 @@ For MongoDB, you can use **MongoDB Atlas** or a local MongoDB server.
 ##### **Backend**
 ```bash
 cd backend
-npm start
+npm run dev
 ```
 ##### **Frontend**
 ```bash
