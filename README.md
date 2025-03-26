@@ -47,7 +47,7 @@ MONGO_URI=your_mongodb_connection_string
 ##### **Backend**
 ```bash
 cd backend
-npm start
+npm run dev
 ```
 ##### **Frontend**
 ```bash
