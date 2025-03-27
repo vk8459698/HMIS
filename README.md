@@ -102,9 +102,8 @@ Before making new changes, you should **sync your fork** with the latest updates
 #### **1️⃣ Add the Main Repository as an Upstream Remote**  
 You only need to do this **once** after forking:  
 ```bash
-git remote add upstream https://github.com/original-owner/original-repo.git
+git remote add upstream https://github.com/SimonShangpliang/HMIS.git
 ```
-🔹 Replace `original-owner/original-repo.git` with the **main repository's URL**.
 
 #### **2️⃣ Fetch the Latest Changes from the Main Repository**  
 ```bash
