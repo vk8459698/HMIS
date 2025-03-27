@@ -91,3 +91,61 @@ HMIS/
 
 ---
 ---
+
+If you want to **pull changes from the main repo** to keep your fork updated before making new changes, follow these steps:  
+
+---
+
+### **🔄 Keeping Your Fork in Sync with the Main Repository**
+Before making new changes, you should **sync your fork** with the latest updates from the main repository.
+
+#### **1️⃣ Add the Main Repository as an Upstream Remote**  
+You only need to do this **once** after forking:  
+```bash
+git remote add upstream https://github.com/original-owner/original-repo.git
+```
+🔹 Replace `original-owner/original-repo.git` with the **main repository's URL**.
+
+#### **2️⃣ Fetch the Latest Changes from the Main Repository**  
+```bash
+git fetch upstream
+```
+
+#### **3️⃣ Switch to Your Local `main` Branch**  
+```bash
+git checkout main
+```
+
+#### **4️⃣ Merge the Latest Changes from Upstream**  
+```bash
+git merge upstream/main
+```
+or, to rebase for a cleaner history:  
+```bash
+git rebase upstream/main
+```
+
+#### **5️⃣ Push the Updated `main` Branch to Your Fork**  
+```bash
+git push origin main
+```
+
+Now your fork is in sync with the main repo! 🚀  
+
+---
+
+### **🔀 Syncing Before Creating a New Branch**  
+If you are starting a new feature branch, always sync your fork **before creating the branch**:  
+```bash
+git checkout main
+git pull upstream main
+git checkout -b new-feature
+```
+
+---
+
+### **💡 Alternative: Use GitHub’s Web UI**
+If you **don’t want to use the terminal**, you can:  
+1. Go to your fork on GitHub.  
+2. Click **"Fetch upstream"** (found above the file list).  
+3. Click **"Merge"** to update your fork.  
