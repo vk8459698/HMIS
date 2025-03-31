@@ -8,43 +8,44 @@ const Sidebar = ({isSidebarOpen}) => {
   // Define role-based menu items with icons
   const menuItems = {
     doctor: [
-      { path: "/doctor/appointments", label: "Appointments", icon: <Clipboard size={20} /> },
       { path: "/doctor/profile", label: "Profile", icon: <User size={20} /> },
+      { path: "/doctor/appointments", label: "Appointments", icon: <Clipboard size={20} /> },
       { path: "/doctor/calendar", label: "Calendar", icon: <Calendar size={20} /> },
-      { path: "/doctor/inventory", label: "Inventory", icon: <Package size={20} /> },
-      { path: "/doctor/payroll-info", label: "Payroll Info", icon: <Briefcase size={20} /> },
       { path: "/doctor/contact-admin", label: "Contact Admin", icon: <List size={20} /> },
+      { path: "/doctor/inventory", label: "Inventory", icon: <Package size={20} /> },
+      { path: "/doctor/payroll-info", label: "Payroll Info.", icon: <Briefcase size={20} /> },
     ],
     nurse: [
-      { path: "/nurse/patient-records", label: "Patient Records", icon: <Clipboard size={20} /> },
       { path: "/nurse/profile", label: "Profile", icon: <User size={20} /> },
+      { path: "/nurse/patient-records", label: "Patient Records", icon: <Clipboard size={20} /> },
       { path: "/nurse/inventory", label: "Inventory", icon: <Package size={20} /> },
-      { path: "/nurse/payroll-info", label: "Payroll Info", icon: <Briefcase size={20} /> },
       { path: "/nurse/contact-admin", label: "Contact Admin", icon: <List size={20} /> },
+      { path: "/nurse/payroll-info", label: "Payroll Info.", icon: <Briefcase size={20} /> },
     ],
     receptionist: [
+      { path: "/receptionist/profile", label: "Profile", icon: <User size={20} /> },
+      { path: "/receptionist/registration", label: "New User Registration", icon: <PlusSquare size={20} /> },
       { path: "/receptionist/appointment-booking", label: "Appointment Booking", icon: <Clipboard size={20} /> },
       { path: "/receptionist/bed-assignment", label: "Bed Mapping", icon: <Clipboard size={20} /> },
-      { path: "/receptionist/registration", label: "New User Registration", icon: <PlusSquare size={20} /> },
-      { path: "/receptionist/profile", label: "Profile", icon: <User size={20} /> },
       { path: "/receptionist/calendar", label: "Doctors Schedule", icon: <Calendar size={20} /> },
+      { path: "/receptionist/add-bill", label: "Add Bills", icon: <Clipboard size={20} /> },
       { path: "/receptionist/contact-admin", label: "Contact Admin", icon: <List size={20} /> },
       { path: "/receptionist/update-appointment", label: "Appointment Update", icon: <Clipboard size={20} /> },
+
     ],
     pathologist: [
-      { path: "/pathologist/add-report", label: "Reports", icon: <Clipboard size={20} /> },
       { path: "/pathologist/profile", label: "Profile", icon: <User size={20} /> },
       { path: "/pathologist/inventory", label: "Equipment Status", icon: <Package size={20} /> },
-      { path: "/pathologist/payroll-info", label: "Payroll Info", icon: <Briefcase size={20} /> },
-      { path: "/pathologist/contact-admin", label: "Contact Admin", icon: <List size={20} /> },
       { path: "/pathologist/patient-info", label: "Patient Information", icon: <User size={20} /> },
+      { path: "/pathologist/add-report", label: "Add Report", icon: <Clipboard size={20} /> },
+      { path: "/pathologist/contact-admin", label: "Contact Admin", icon: <List size={20} /> },
+      { path: "/pathologist/payroll-info", label: "Payroll Info.", icon: <Briefcase size={20} /> },
 
     ],
     pharmacist: [
-      { path: "/pharmacist/profile", label: "Profile", icon: <User size={20} /> },
       { path: "/pharmacist/inventory", label: "Inventory", icon: <Package size={20} /> },
-      { path: "/pharmacist/contact-admin", label: "Contact Admin", icon: <List size={20} /> },
       { path: "/pharmacist/patient-info", label: "Patient Information", icon: <User size={20} /> },
+      { path: "/pharmacist/contact-admin", label: "Contact Admin", icon: <List size={20} /> },
 
     ],
     patient: [
@@ -56,13 +57,13 @@ const Sidebar = ({isSidebarOpen}) => {
       
     ],
     admin: [
+      { path: "/admin/inventory", label: "Inventory", icon: <Package size={20} /> },
+      { path: "/admin/calendar", label: "Calendars", icon: <Calendar size={20} /> },
+      { path: "/admin/payroll-info", label: "Payroll", icon: <Briefcase size={20} /> },
       { path: "/admin/add-staff", label: "Add Staff", icon: <PlusSquare size={20} /> },
-      { path: "/admin/payroll-info", label: "Payroll Info", icon: <Briefcase size={20} /> },
+      { path: "/admin/analytics", label: "Analytics", icon: <List size={20} /> },
       { path: "/admin/manage-payrolls", label: "Manage Payrolls", icon: <Briefcase size={20} /> },
       { path: "/admin/ambulance", label: "Manage Ambulance", icon: <Clipboard size={20} /> },
-      { path: "/admin/calendar", label: "Calendar", icon: <Calendar size={20} /> },
-      { path: "/admin/inventory", label: "Inventory", icon: <Package size={20} /> },
-      { path: "/admin/analytics", label: "Analytics", icon: <List size={20} /> },
     ],
   };
 

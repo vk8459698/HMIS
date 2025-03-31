@@ -66,6 +66,7 @@ import MedicineEffectivenessVsHumanTraits from "./pages/admin/analytics/Medicine
 import Feedbacks from "./pages/admin/analytics/Feedbacks";
 
 import PublicData from "./pages/PublicData";
+import AddBill from "./pages/receptionist/AddBill";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -170,6 +171,8 @@ function App() {
             {/* Registration means new user registration*/}
             <Route path="/receptionist/registration" element={<Registration />} />
             <Route path="/receptionist/update-appointment" element={<AppointmentUpdate />} />
+            <Route path="/receptionist/add-bill" element={<AddBill />} />
+
 
           </Route>
 
