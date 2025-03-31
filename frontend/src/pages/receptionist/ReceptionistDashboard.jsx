@@ -2,7 +2,7 @@ const ReceptionistDashboard = () => {
     
     return (
       <div>
-        <h1>Receptionist</h1>
+        <h1></h1>
       </div>
     );
   };
