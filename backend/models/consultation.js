@@ -1,155 +1,64 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Home } from "lucide-react";
-import "../../styles/patient/PreviousConsultations.css";
+// models/consultation.js
+import mongoose from 'mongoose';
+const { Schema } = mongoose;
 
-const fetchConsultationsByPatientId = async (patientId) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const dummyConsultations = [
-        { id: 1, date: "2025-04-03", doctor: "Dr. Smith", location: "Room 101", details: "Checkup" },
-        { id: 2, date: "2025-04-05", doctor: "Dr. Adams", location: "Room 203", details: "Follow-up" },
-        { id: 3, date: "2025-04-07", doctor: "Dr. Williams", location: "Room 305", details: "Diagnosis" },
-        { id: 4, date: "2025-04-10", doctor: "Dr. Brown", location: "Room 408", details: "Consultation" },
-      ];
-      resolve(dummyConsultations);
-    }, 500);
-  });
-};
+const PrescriptionEntrySchema = new Schema({
+  medicine_id: { type: Schema.Types.ObjectId, ref: 'Medicine' },
+  dosage: String,
+  frequency: String,
+  duration: String,
+  quantity: Number,
+  dispensed_qty: { type: Number, default: 0 }
+});
 
-const fetchConsultationById = async (consultationId) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const dummyConsultations = [
-        {
-          id: 1,
-          patient_id: "123",
-          date: "2025-04-03",
-          doctor: "Dr. Smith",
-          location: "Room 101",
-          details: "Checkup",
-          diagnosis: ["Hypertension"],
-          prescription: {
-            prescriptionDate: "2025-04-03",
-            status: "dispensed",
-            entries: [
-              { medicine_id: "Med123", dosage: "2 tablets", frequency: "daily", duration: "7 days", quantity: 14, dispensed_qty: 14 }
-            ]
-          },
-          reports: [
-            { status: "completed", reportText: "Blood test normal", createdBy: "Dr. Smith", createdAt: "2025-04-03" }
-          ],
-          feedback: { rating: 4, comments: "Good service" }
-        }
-      ];
+const PrescriptionSchema = new Schema({
+  prescriptionDate: Date,
+  status: { 
+    type: String, 
+    enum: ["pending", "dispensed", "partially_dispensed", "cancelled"] 
+  },
+  entries: [PrescriptionEntrySchema] // Embedded array
+});
 
-      const consultation = dummyConsultations.find((c) => c.id === Number(consultationId));
-      resolve(consultation || null);
-    }, 500);
-  });
-};
+const ReportSchema = new Schema({
+  status: { type: String, enum: ["pending", "completed"] },
+  reportText: String,
+  createdBy: Schema.Types.ObjectId, // Doctor or staff ID
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+});
 
-const PreviousConsultations = () => {
-  const [consultations, setConsultations] = useState([]);
-  const [consultation, setConsultation] = useState(null);
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const patientId = "123";
+const ConsultationSchema = new Schema({
+  patient_id: { type: Schema.Types.ObjectId, ref: 'Patient' },
+  doctor_id: { type: Schema.Types.ObjectId, ref: 'Doctor' },
+  appointment_date: Date,
+  start_time: String,
+  status: { 
+    type: String, 
+    enum: ["scheduled", "completed", "cancelled"] 
+  },
+  reason: String,
+  created_by: { type: Schema.Types.ObjectId, ref: 'Receptionist' },
+  actual_start_datetime: Date,
+  remark: String,
+  diagnosis: [{ type: String, ref: 'Diagnosis' }], // Array of diagnosis IDs
+  prescription: PrescriptionSchema, // Embedded document
+  reports: [ReportSchema], // Array of embedded documents
+  bill_id: { type: Schema.Types.ObjectId, ref: 'Bill' },
+  recordedAt: Date
+}, { timestamps: true });
 
-  useEffect(() => {
-    const loadConsultations = async () => {
-      const data = await fetchConsultationsByPatientId(patientId);
-      setConsultations(data);
-    };
-    loadConsultations();
-  }, [patientId]);
+// Add a feedback subdocument schema
+const FeedbackSchema = new Schema({
+  rating: { type: Number, enum: [1, 2, 3, 4, 5] },
+  comments: String,
+  created_at: { type: Date, default: Date.now }
+});
 
-  useEffect(() => {
-    if (id) {
-      const loadConsultation = async () => {
-        const data = await fetchConsultationById(id);
-        setConsultation(data);
-      };
-      loadConsultation();
-    }
-  }, [id]);
+// Add feedback to consultation schema
+ConsultationSchema.add({
+  feedback: FeedbackSchema
+});
 
-  return (
-    <div className="consultations-page">
-      <main className="consultations-content">
-        <header className="consultations-header">
-          <h2>Patient Consultations</h2>
-        </header>
-
-        {id ? (
-          consultation ? (
-            <div className="consultation-details">
-              <h3>Consultation Details</h3>
-              <p><strong>Consultation ID:</strong> {consultation.id}</p>
-              <p><strong>Patient ID:</strong> {consultation.patient_id}</p>
-              <p><strong>Doctor:</strong> {consultation.doctor}</p>
-              <p><strong>Date:</strong> {consultation.date}</p>
-              <p><strong>Location:</strong> {consultation.location}</p>
-              <p><strong>Details:</strong> {consultation.details}</p>
-              
-              <h3>Diagnosis</h3>
-              <ul>
-                {consultation.diagnosis.map((diag, index) => (
-                  <li key={index}>{diag}</li>
-                ))}
-              </ul>
-
-              <h3>Prescription</h3>
-              <p><strong>Status:</strong> {consultation.prescription.status}</p>
-              <ul>
-                {consultation.prescription.entries.map((entry, index) => (
-                  <li key={index}>{entry.dosage} - {entry.frequency} - {entry.duration}</li>
-                ))}
-              </ul>
-
-              <h3>Reports</h3>
-              {consultation.reports.map((report, index) => (
-                <div key={index}>
-                  <p><strong>Status:</strong> {report.status}</p>
-                  <p><strong>Report:</strong> {report.reportText}</p>
-                </div>
-              ))}
-
-              <h3>Feedback</h3>
-              <p><strong>Rating:</strong> {consultation.feedback.rating}</p>
-              <p><strong>Comments:</strong> {consultation.feedback.comments}</p>
-              
-              <button onClick={() => navigate("/patient/previous-consultations")} className="back-button">
-                Back to Consultations
-              </button>
-            </div>
-          ) : (
-            <p className="no-data">Consultation Not Found</p>
-          )
-        ) : (
-          <section className="consultations-list">
-            {consultations.length > 0 ? (
-              consultations.map((consult) => (
-                <div
-                  key={consult.id}
-                  className="consultation-card"
-                  onClick={() => navigate(`/patient/previous-consultations/${consult.id}`)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <span className="consult-date">{consult.date}</span>
-                  <span className="consult-doctor">{consult.doctor}</span>
-                  <span className="consult-location">{consult.location}</span>
-                  <span className="consult-details">{consult.details}</span>
-                </div>
-              ))
-            ) : (
-              <p className="no-data">No Consultations Available</p>
-            )}
-          </section>
-        )}
-      </main>
-    </div>
-  );
-};
-
-export default PreviousConsultations;
+const Consultation = mongoose.model('Consultation', ConsultationSchema);
+export default Consultation;
