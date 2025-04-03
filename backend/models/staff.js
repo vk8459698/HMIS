@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const DoctorSchema = new Schema({
-  profile_pic: String,
   employee_id: { type: Schema.Types.ObjectId, ref: 'Employee' },
   department_id: { type: String, ref: 'Department' },
   specialization: String,
@@ -39,11 +38,16 @@ const PathologistSchema = new Schema({
   lab_id: { type: Schema.Types.ObjectId, ref: 'Lab' }
 });
 
+const DriverSchema = new Schema({
+  employee_id: { type: Schema.Types.ObjectId, ref: 'Employee' }
+});
+
 const Doctor = mongoose.model('Doctor', DoctorSchema);
 const Nurse = mongoose.model('Nurse', NurseSchema);
 const Pharmacist = mongoose.model('Pharmacist', PharmacistSchema);
 const Receptionist = mongoose.model('Receptionist', ReceptionistSchema);
 const Admin = mongoose.model('Admin', AdminSchema);
 const Pathologist = mongoose.model('Pathologist', PathologistSchema);
+const Driver = mongoose.model('Driver', DriverSchema);
 
-export { Doctor, Nurse, Pharmacist, Receptionist, Admin, Pathologist };
+export { Doctor, Nurse, Pharmacist, Receptionist, Admin, Pathologist, Driver};

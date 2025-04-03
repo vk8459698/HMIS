@@ -15,6 +15,7 @@ const BillItemSchema = new Schema({
   quantity: Number
 });
 
+
 const PaymentSchema = new Schema({
     amount: Number,
     insurance_id: { type: Schema.Types.ObjectId, ref: 'Insurance' },
@@ -29,13 +30,13 @@ const PaymentSchema = new Schema({
     patient_id: { type: Schema.Types.ObjectId, ref: 'Patient' },
     generation_date: Date,
     total_amount: Number,
-    payment_status: { 
-      type: String, 
-      enum: ["paid", "pending", "partially_paid"] 
+    payment_status: {
+      type: String,
+      enum: ["paid", "pending", "partially_paid"]
     },
     items: [BillItemSchema], // Embedded array
     payments: [PaymentSchema] // Embedded array
   }, { timestamps: true });
-  
+
   const Bill = mongoose.model('Bill', BillSchema);
   export default Bill;
