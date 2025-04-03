@@ -129,6 +129,7 @@ function App() {
             <Route path="/patient/daily-progress" element={<DailyProgress />} />
 
             <Route path="/patient/previous-consultations" element={<PreviousConsultations />} />
+            <Route path="/patient/previous-consultations/:id" element={<PreviousConsultations />} />
             <Route path="/patient/book-consultation" element={<BookConsultation />} />
             <Route path="/patient/booked-consultation" element={<BookedConsultation />} />
             <Route path="/patient/reschedule-consultation/:consultationId" element={<RescheduleConsultation />} />
