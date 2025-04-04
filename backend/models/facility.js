@@ -1,13 +1,10 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
-const DriverSchema = new Schema({
-  employee_id: { type: Schema.Types.ObjectId, ref: 'Employee' }
-});
 
 const AmbulanceSchema = new Schema({
   vehicle_number: String,
-  driver: DriverSchema, // Embedded document
+  driver: {type: Schema.Types.ObjectId, ref: "Driver"}, // Embedded document
   status: { type: String, enum: ["active", "inactive"] },
   nurse_id: { type: Schema.Types.ObjectId, ref: 'Nurse' }
 });

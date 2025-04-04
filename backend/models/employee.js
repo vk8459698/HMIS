@@ -12,6 +12,7 @@ const EmployeeSchema = new Schema({
   name: String,
   email: { type: String, unique: true },
   password: String,
+  profile_pic: String,
   role: { 
     type: String, 
     enum: ["doctor", "nurse", "pharmacist", "receptionist", "admin", "pathologist", "driver"] 

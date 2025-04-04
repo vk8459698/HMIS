@@ -31,18 +31,17 @@ const ReportSchema = new Schema({
 const ConsultationSchema = new Schema({
   patient_id: { type: Schema.Types.ObjectId, ref: 'Patient' },
   doctor_id: { type: Schema.Types.ObjectId, ref: 'Doctor' },
-  appointment_date: Date,
-  start_time: String,
-  status: { 
+  booked_date_time: Date,
+  status: {
     type: String, 
     enum: ["scheduled", "completed", "cancelled"] 
   },
-  reason: String,
+  reason: String, //symptoms
   created_by: { type: Schema.Types.ObjectId, ref: 'Receptionist' },
   actual_start_datetime: Date,
   remark: String,
   diagnosis: [{ type: String, ref: 'Diagnosis' }], // Array of diagnosis IDs
-  prescription: PrescriptionSchema, // Embedded document
+  prescription: [PrescriptionSchema], // Embedded document
   reports: [ReportSchema], // Array of embedded documents
   bill_id: { type: Schema.Types.ObjectId, ref: 'Bill' },
   recordedAt: Date
