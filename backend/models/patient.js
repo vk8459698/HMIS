@@ -29,7 +29,6 @@ const VitalsSchema = new Schema({
   
 const PatientSchema = new Schema({
   _id: {type: Number }, // Auto-incremented field
-  patient_username: String, // same as email
   password: String,
   name: String,
   profile_pic: String,
