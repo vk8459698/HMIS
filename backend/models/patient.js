@@ -1,6 +1,7 @@
 // models/patient.js
 import mongoose from 'mongoose';
-const AutoIncrement  = require('mongoose-sequence')(mongoose)
+import seq from 'mongoose-sequence';
+const AutoIncrement = seq(mongoose);
 const { Schema } = mongoose;
 
 const PatientInfoSchema = new Schema({
