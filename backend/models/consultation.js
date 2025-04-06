@@ -23,10 +23,13 @@ const PrescriptionSchema = new Schema({
 const ReportSchema = new Schema({
   status: { type: String, enum: ["pending", "completed"] },
   reportText: String,
+  title: { type: String, required: true },
+  description: { type: String },
   createdBy: Schema.Types.ObjectId, // Doctor or staff ID
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
+
 
 const ConsultationSchema = new Schema({
   patient_id: { type: Schema.Types.ObjectId, ref: 'Patient' },

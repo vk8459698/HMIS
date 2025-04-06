@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const { Schema } = mongoose;
 
 const MedicineSchema = new Schema({
+    medicine_id: Number, // Auto-incremented field
   med_name: String,
   effectiveness: { type: String, enum: ["high", "medium", "low"] },
   dosage_form: { 
@@ -19,6 +21,8 @@ const MedicineSchema = new Schema({
     supplier: String
   }] // Embedded inventory array
 }, { timestamps: true });
+
+MedicineSchema.plugin(AutoIncrement, { inc_field: 'medicine_id', start_seq: 10000, increment_by: 1 });
 
 const Medicine = mongoose.model('Medicine', MedicineSchema);
 export default Medicine;

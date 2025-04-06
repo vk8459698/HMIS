@@ -1,5 +1,6 @@
 // models/patient.js
 import mongoose from 'mongoose';
+const AutoIncrement  = require('mongoose-sequence')(mongoose)
 const { Schema } = mongoose;
 
 const PatientInfoSchema = new Schema({
@@ -26,6 +27,7 @@ const VitalsSchema = new Schema({
 }, { timestamps: true });
   
 const PatientSchema = new Schema({
+  patient_id: Number, // Auto-incremented field
   patient_username: String, // same as email
   password: String,
   name: String,
@@ -37,6 +39,8 @@ const PatientSchema = new Schema({
   vitals: [VitalsSchema], // Array of embedded documents
   insurance_details: [{ type: Schema.Types.ObjectId, ref: 'Insurance' }]
 }, { timestamps: true });
+
+PatientSchema.plugin(AutoIncrement, { inc_field: 'patient_id',start_seq: 10000, increment_by: 1 });
 
 const Patient = mongoose.model('Patient', PatientSchema);
 export default Patient;
