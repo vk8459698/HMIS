@@ -31,6 +31,7 @@ import ConsultationReports from "./pages/patient/ConsultationReports";
 import ConsultationPrescriptions from "./pages/patient/ConsultationPrescryptions";
 import ConsultationDiagnosis from "./pages/patient/ConsultationDiagnosis";
 import ConsultantBills from "./pages/patient/ConsultantBills";
+import Support from "./pages/patient/Support";
 
 import Consultations from "./pages/patient/Consultations";
 import DailyProgress from "./pages/patient/DailyProgress";
@@ -42,6 +43,8 @@ import PatientConsulatation from "./pages/doctor/PatientConsultation"
 
 import NurseDashboard from "./pages/nurse/NurseDashboard";
 import PatientRecords from "./pages/nurse/PatientRecords";
+import PatientConsultations from "./pages/nurse/PatientConsultations"; // Add import for the new component
+import PatientConsultationDetails from "./pages/nurse/PatientConsultationDetails";
 
 import PharmacistDashboard from "./pages/pharmacist/PharmacistDashboard";
 
@@ -96,7 +99,7 @@ function App() {
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/public-data" element={<PublicData />} />
 
-         {/* Role-Based Common Pages */}
+         {/* Role-Based Common Pages */}                  
          <Route element={<ProtectedRoute allowedRoles={["doctor", "nurse", "receptionist", "admin", "patient", "pathologist"]} />}>
             <Route path=":role/profile" element={<Profile />} />
           </Route>
@@ -133,6 +136,7 @@ function App() {
             <Route path="/patient/bills/:billId" element={<Bills />} />
             <Route path="/patient/consultations" element={<Consultations />} />
             <Route path="/patient/daily-progress" element={<DailyProgress />} />
+            <Route path="/patient/support" element={<Support />} />
 
             <Route path="/patient/previous-consultations" element={<PreviousConsultations />} />
             {/* <Route path="/patient/previous-consultations/:id" element={<PreviousConsultations />} /> */}
@@ -164,6 +168,10 @@ function App() {
           <Route element={<ProtectedRoute allowedRoles={["nurse"]} />}>
             <Route path="/nurse" element={<NurseDashboard />} />
             <Route path="/nurse/patient-records" element={<PatientRecords />} />
+            <Route path="/nurse/patient-records/:patientId/consultations" element={<PatientConsultations />} />
+                {/* Add this new route for consultation details */}
+                <Route path="/nurse/patient-consultations/:consultationId" element={<PatientConsultationDetails />} />
+              
           </Route>
 
           <Route element={<ProtectedRoute allowedRoles={["pharmacist"]} />}>
