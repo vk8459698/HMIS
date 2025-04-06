@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const InsuranceSchema = new Schema({
-  patient_id: { type: Schema.Types.ObjectId, ref: 'Patient' },
+  patient_id: { type: Number, ref: 'Patient' },
   insurance_provider: String,
   policy_number: Number,
   coverage_details: String,

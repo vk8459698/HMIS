@@ -10,7 +10,7 @@ const BankDetailsSchema = new Schema({
 });
 
 const EmployeeSchema = new Schema({
-  employee_id_incr :Number,
+  _id : {type:Number},
   name: String,
   email: { type: String, unique: true },
   password: String,
@@ -27,9 +27,9 @@ const EmployeeSchema = new Schema({
   gender: { type: String, enum: ["male", "female"] },
   salary: Number,
   bank_details: BankDetailsSchema, // Embedded document
-}, { timestamps: true });
+}, { timestamps: true , _id:false });
 
-EmployeeSchema.plugin(AutoIncrement, { inc_field: 'employee_id', start_seq: 10000, increment_by: 1 });
+EmployeeSchema.plugin(AutoIncrement, { inc_field: '_id', start_seq: 10000, increment_by: 1 });
 
 const Employee = mongoose.model('Employee', EmployeeSchema);
 export default Employee;
