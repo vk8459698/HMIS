@@ -659,7 +659,7 @@ const MedicineTrends = () => {
       
       {/* Medicine Inventory Analysis */}
       {activeTab === "inventory" && (
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8 pb-15">
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8 pb-17">
           <h2 className="flex items-center text-xl font-semibold text-gray-700 mb-6">
             <FaChartLine className="mr-2 text-blue-500" />
             Medicine Inventory Trend Analysis
@@ -816,7 +816,7 @@ const MedicineTrends = () => {
       
       {/* Medicine Prescription Analysis */}
       {activeTab === "prescription" && (
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8 pb-17">
           <h2 className="flex items-center text-xl font-semibold text-gray-700 mb-6">
             <FaClipboardList className="mr-2 text-green-500" />
             Medicine Prescription Trend Analysis
