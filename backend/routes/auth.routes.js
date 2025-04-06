@@ -3,6 +3,8 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import {User} from "../models/test.js";  // Ensure the correct file path
 import dotenv from "dotenv";
+import Patient from "../models/patient.js";
+import Employee from "../models/employee.js";
 dotenv.config();
 
 const router = express.Router();
@@ -31,19 +33,30 @@ router.post("/register", async (req, res) => {
 
 // Login
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password ,userType} = req.body;
   try {
-    const user = await User.findOne({ email });
+    let user;
+    
+    if(userType=="patient"){
+      user = await Patient.findOne({ email });
+    }
+    else{
+      user = await Employee.findOne({ email });
+    }
+    
+
+    // const user = await User.findOne({ email });
     
     if (!user) return res.status(400).json({ error: "Invalid credentials" });
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ error: "Invalid credentials" });
-  
-
     const { accessToken, refreshToken } = generateTokens(user);
     res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: false, sameSite: "Lax" });
-    res.json({ accessToken, role: user.role });
+
+    if(userType=="patient")res.json({ accessToken, role: "patient" });
+    else res.json({ accessToken, role: user.role });
+
   } catch (err) {
     res.status(500).json({ error: "Server error" });
   }
