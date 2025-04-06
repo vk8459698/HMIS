@@ -47,8 +47,8 @@ const DriverSchema = new Schema({
   employee_id: { type: Number, ref: 'Employee' }
 });
 
-DoctorSchema.plugin(AutoIncrement, { inc_field: '_id', start_seq: 10000, increment_by: 1 });
-NurseSchema.plugin(AutoIncrement, { inc_field: '_id', start_seq: 10000, increment_by: 1 });
+DoctorSchema.plugin(AutoIncrement, { inc_field: '_id',id: 'doctor_id_counter',  start_seq: 10000, increment_by: 1 });
+NurseSchema.plugin(AutoIncrement, { inc_field: '_id', id: 'nurse_id_counter', start_seq: 10000, increment_by: 1 });
 
 const Doctor = mongoose.model('Doctor', DoctorSchema);
 const Nurse = mongoose.model('Nurse', NurseSchema);

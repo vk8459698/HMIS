@@ -35,8 +35,8 @@ const ReportSchema = new Schema({
 
 
 const ConsultationSchema = new Schema({
-  patient_id: { type: Schema.Types.ObjectId, ref: 'Patient' },
-  doctor_id: { type: Schema.Types.ObjectId, ref: 'Doctor' },
+  patient_id: { type: Number, ref: 'Patient' },
+  doctor_id: { type:Number, ref: 'Doctor' },
   booked_date_time: Date,
   status: {
     type: String, 
@@ -44,6 +44,7 @@ const ConsultationSchema = new Schema({
   },
   reason: String, //symptoms
   created_by: { type: Schema.Types.ObjectId, ref: 'Receptionist' },
+  appointment_type: {type: String, enum: ["regular", "follow-up", "emergency","consultation"]},
   actual_start_datetime: Date,
   remark: String,
   diagnosis: [{ type: String, ref: 'Diagnosis' }], // Array of diagnosis IDs
@@ -65,7 +66,7 @@ ConsultationSchema.add({
   feedback: FeedbackSchema
 });
 
-PrescriptionSchema.plugin(AutoIncrement, { inc_field: '_id', start_seq: 10000, increment_by: 1 });
+PrescriptionSchema.plugin(AutoIncrement, { inc_field: '_id',id: 'prescription_id_counter',  start_seq: 10000, increment_by: 1 });
 const Prescription = mongoose.model('Prescription', PrescriptionSchema);
 const Consultation = mongoose.model('Consultation', ConsultationSchema);
 const Feedback = mongoose.model('Feedback', FeedbackSchema);
