@@ -55,6 +55,7 @@ const Sidebar = ({isSidebarOpen}) => {
       { path: "/patient/bills", label: "Bills", icon: <Briefcase size={20} /> },
       { path: "/patient/feedback", label: "Feedback", icon: <List size={20} /> },
       { path: "/patient/daily-progress", label: "Daily Progress", icon: <Clipboard size={20} /> },
+      { path: "/patient/support", label: "Help and Support", icon: <Clipboard size={20} /> },
       
     ],
     admin: [
