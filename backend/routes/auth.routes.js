@@ -1,7 +1,7 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import {User} from "../models/test.js";  // Ensure the correct file path
+//import {User} from "../models/test.js";  // Ensure the correct file path
 import dotenv from "dotenv";
 import Patient from "../models/patient.js";
 import Employee from "../models/employee.js";
@@ -18,18 +18,7 @@ const generateTokens = (user) => {
     return { accessToken, refreshToken };
 };
 
-// Register
-router.post("/register", async (req, res) => {
-  const { username, email, password, role } = req.body;
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ username, email, password: hashedPassword, role });
-    await user.save();
-    res.status(201).json({ message: "User registered" });
-  } catch (err) {
-    res.status(500).json({ error: "Error registering user" });
-  }
-});
+
 
 // Login
 router.post("/login", async (req, res) => {
