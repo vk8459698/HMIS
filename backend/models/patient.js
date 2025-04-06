@@ -41,7 +41,7 @@ const PatientSchema = new Schema({
   insurance_details: [{ type: Schema.Types.ObjectId, ref: 'Insurance' }]
 }, { timestamps: true , _id:false });
 
-PatientSchema.plugin(AutoIncrement, { inc_field: '_id',start_seq: 10000, increment_by: 1 });
+PatientSchema.plugin(AutoIncrement, { inc_field: '_id',id: 'patient_id_counter', start_seq: 10000, increment_by: 1 });
 
 const Patient = mongoose.model('Patient', PatientSchema);
 export default Patient;

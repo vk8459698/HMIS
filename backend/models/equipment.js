@@ -13,7 +13,7 @@ const EquipmentSchema = new Schema({
   next_service_date: Date
 }, { timestamps: true, _id: false });
 
-EquipmentSchema.plugin(AutoIncrement, { inc_field: '_id', start_seq: 10000, increment_by: 1 });
+EquipmentSchema.plugin(AutoIncrement, { inc_field: '_id',id: 'equipment_id_counter',  start_seq: 10000, increment_by: 1 });
 
 const Equipment = mongoose.model('Equipment', EquipmentSchema);
 export default Equipment;
