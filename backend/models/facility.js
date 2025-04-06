@@ -24,8 +24,14 @@ const RoomSchema = new Schema({
   beds: [BedSchema] // Embedded array of beds
 });
 
+const DailyOccupancySchema = new Schema({
+  date: { type: Date, required: true, unique: true }, // The specific date
+  occupiedBeds: [{ type: mongoose.Types.ObjectId, ref: 'Bed' }] // List of occupied bed IDs
+}, { timestamps: true }); // Automatically add createdAt and updatedAt timestamps
+
 const Ambulance = mongoose.model('Ambulance', AmbulanceSchema);
 const Room = mongoose.model('Room', RoomSchema);
 const Bed = mongoose.model('Bed', BedSchema);
+const DailyOccupancy = mongoose.model('DailyOccupancy', DailyOccupancySchema);
+export { Ambulance, Room, Bed ,DailyOccupancy};
 
-export { Ambulance, Room, Bed };
