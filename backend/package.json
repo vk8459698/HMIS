@@ -21,7 +21,10 @@
     "jsonwebtoken": "^9.0.2",
     "joi": "^17.13.3",
     "mongoose": "^8.13.0",
-    "mongoose-sequence": "^6.0.1"
+    "mongoose-sequence": "^6.0.1",
+    "archiver": "^7.0.1",
+    "csv-writer": "^1.6.0"
+
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
