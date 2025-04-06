@@ -35,8 +35,8 @@ const ReportSchema = new Schema({
 
 
 const ConsultationSchema = new Schema({
-  patient_id: { type: Schema.Types.ObjectId, ref: 'Patient' },
-  doctor_id: { type: Schema.Types.ObjectId, ref: 'Doctor' },
+  patient_id: { type: Number, ref: 'Patient' },
+  doctor_id: { type:Number, ref: 'Doctor' },
   booked_date_time: Date,
   status: {
     type: String, 
