@@ -1,4 +1,4 @@
-import {Test} from "../models/test.js"
+import Test from "../models/test.js"
 // Create a test entry
 export const createTest = async (req, res) => {
   try {
