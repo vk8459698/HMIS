@@ -7,7 +7,11 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [role, setRole] = useState(null);
-
+  const [user, setUser] = useState(
+    {
+      role:"user"
+    }
+  )
       // Create axiosInstance once and memoize it
       const axiosInstance = useMemo(() => {
         const instance = createAxiosInstance(setToken);
@@ -51,6 +55,7 @@ export const AuthProvider = ({ children }) => {
     setToken,
     setRole,
     axiosInstance
+    ,user,setUser
     }), [token, role, axiosInstance]);
     console.log('Providing context value:', contextValue);
 
