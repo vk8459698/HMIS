@@ -44,6 +44,7 @@ const ConsultationSchema = new Schema({
   },
   reason: String, //symptoms
   created_by: { type: Schema.Types.ObjectId, ref: 'Receptionist' },
+  appointment_type: {type: String, enum: ["regular", "follow-up", "emergency","consultation"]},
   actual_start_datetime: Date,
   remark: String,
   diagnosis: [{ type: String, ref: 'Diagnosis' }], // Array of diagnosis IDs
