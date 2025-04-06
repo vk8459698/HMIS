@@ -19,6 +19,7 @@ import billingRoutes from './routes/billing.routes.js';
 import facilityRoutes from './routes/facility.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import cookieParser from "cookie-parser";
+import publicRoutes from './routes/public.routes.js';
 
 dotenv.config();
 
@@ -59,5 +60,7 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/billing', billingRoutes);
 app.use('/api/facility', facilityRoutes);
 app.use("/api/auth", authRoutes);
+app.use('/api/public-data', publicRoutes);
+
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
