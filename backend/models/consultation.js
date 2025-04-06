@@ -36,7 +36,7 @@ const ReportSchema = new Schema({
 
 const ConsultationSchema = new Schema({
   patient_id: { type: Number, ref: 'Patient' },
-  doctor_id: { type: Number, ref: 'Doctor' },
+  doctor_id: { type:Number, ref: 'Doctor' },
   booked_date_time: Date,
   status: {
     type: String, 
@@ -65,7 +65,7 @@ ConsultationSchema.add({
   feedback: FeedbackSchema
 });
 
-PrescriptionSchema.plugin(AutoIncrement, { inc_field: '_id', start_seq: 10000, increment_by: 1 });
+PrescriptionSchema.plugin(AutoIncrement, { inc_field: '_id',id: 'prescription_id_counter',  start_seq: 10000, increment_by: 1 });
 const Prescription = mongoose.model('Prescription', PrescriptionSchema);
 const Consultation = mongoose.model('Consultation', ConsultationSchema);
 const Feedback = mongoose.model('Feedback', FeedbackSchema);
