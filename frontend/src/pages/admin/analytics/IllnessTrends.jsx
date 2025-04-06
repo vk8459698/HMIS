@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Bar, Line, Pie } from "react-chartjs-2";
+import { Line, Bar, Pie } from "react-chartjs-2";
 import { Chart as ChartJS, registerables } from "chart.js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -46,9 +46,12 @@ const IllnessTrends = () => {
   }, [selectedDisease, trendStartDate, trendEndDate]);
   
   // Fetch top K diseases when parameters change
-  useEffect(() => {
+  // Fetch top K diseases when parameters change
+useEffect(() => {
+  if (diseases.length > 0) {
     fetchTopKDiseases();
-  }, [topKStartDate, topKEndDate, kValue]);
+  }
+}, [topKStartDate, topKEndDate, kValue, diseases]);
 
   // Fetch list of diseases from the backend
   const fetchDiseases = async () => {
@@ -127,6 +130,7 @@ const IllnessTrends = () => {
   };
 
   // Simulation of backend data generation for disease trends
+  // This structure matches what your backend would return after processing Consultations table
   function generateDiseaseTrendData(diseaseId, startDate, endDate) {
     // Calculate date range for months
     const monthlyLabels = [];
@@ -195,6 +199,7 @@ const IllnessTrends = () => {
   // Simulation of backend data generation for top K diseases
   function generateTopKDiseases(startDate, endDate, k) {
     // Available diseases to choose from
+    if (diseases.length === 0) return [];
     const allDiseases = diseases.slice(0);
     const selectedDiseases = [];
     
@@ -246,6 +251,35 @@ const IllnessTrends = () => {
       setSelectedMonth(monthName);
       setActiveTab("weekly");
     }
+  };
+
+  // Chart options
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      tooltip: {
+        backgroundColor: "rgba(0, 0, 0, 0.7)",
+        padding: 10,
+        cornerRadius: 6,
+      },
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+      },
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: "rgba(0, 0, 0, 0.05)",
+        },
+      },
+    },
   };
 
   // Prepare monthly chart data
@@ -318,6 +352,13 @@ const IllnessTrends = () => {
     ],
   };
 
+  // Loader component
+  const Loader = () => (
+    <div className="flex items-center justify-center h-40">
+      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
+    </div>
+  );
+
   // Custom disease card component for top K diseases
   const DiseaseCard = ({ item, rank }) => {
     // Get icon for disease based on category
@@ -381,68 +422,300 @@ const IllnessTrends = () => {
   };
 
   return (
-    <div>
-      <h1>Illness Trends Analysis</h1>
+    <div className="flex flex-col w-full p-6 bg-gray-50 min-h-screen">
+      <h1 className="flex items-center text-3xl font-bold text-gray-800 mb-6">
+        <FaVirus className="mr-3 text-blue-500" />
+        Illness Trends Analysis
+      </h1>
       
-      {/* Disease Selector */}
-      <select value={selectedDisease} onChange={(e) => setSelectedDisease(e.target.value)}>
-        {diseases.map((disease) => (
-          <option key={disease.id} value={disease.id}>
-            {disease.name}
-          </option>
-        ))}
-      </select>
-
-      {/* Date Range Pickers */}
-      <div>
-        <label>Start Date:</label>
-        <DatePicker selected={trendStartDate} onChange={(date) => setTrendStartDate(date)} />
-        <label>End Date:</label>
-        <DatePicker selected={trendEndDate} onChange={(date) => setTrendEndDate(date)} />
-      </div>
-
-      {/* Monthly Chart */}
-      <div>
-        <h2>Monthly Trend</h2>
-        <Bar data={monthlyChartData} />
+      {/* Disease Trends Section */}
+      <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h2 className="flex items-center text-xl font-semibold text-gray-700 mb-6">
+          <FaChartLine className="mr-2 text-blue-500" />
+          Disease Trend Analysis
+        </h2>
+        
+        <div className="flex flex-wrap gap-4 mb-6">
+          {/* Disease selector */}
+          <div className="flex flex-col flex-grow max-w-xs">
+            <label className="text-sm text-gray-600 mb-1 flex items-center">
+              <FaVirus className="mr-1 text-blue-500" />
+              Select Disease:
+            </label>
+            <div className="relative">
+              <select 
+                className="w-full border border-gray-300 rounded-md px-3 py-2 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                value={selectedDisease}
+                onChange={(e) => setSelectedDisease(e.target.value)}
+                disabled={loading || diseases.length === 0}
+              >
+                {diseases.map(disease => (
+                  <option key={disease.id} value={disease.id}>
+                    {disease.name}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          
+          {/* Date range selector */}
+          <div className="flex flex-col">
+            <label className="text-sm text-gray-600 mb-1 flex items-center">
+              <FaCalendarAlt className="mr-1 text-blue-500" />
+              Start Date:
+            </label>
+            <DatePicker
+              selected={trendStartDate}
+              onChange={date => setTrendStartDate(date)}
+              className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              dateFormat="MMMM d, yyyy"
+            />
+          </div>
+          
+          <div className="flex flex-col">
+            <label className="text-sm text-gray-600 mb-1 flex items-center">
+              <FaCalendarAlt className="mr-1 text-blue-500" />
+              End Date:
+            </label>
+            <DatePicker
+              selected={trendEndDate}
+              onChange={date => setTrendEndDate(date)}
+              className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              dateFormat="MMMM d, yyyy"
+              minDate={trendStartDate}
+            />
+          </div>
+        </div>
+        
+        {/* Trend tabs */}
+        <div className="border-b border-gray-200 mb-4">
+          <ul className="flex -mb-px">
+            <li className="mr-1">
+              <button
+                className={`inline-block py-2 px-4 ${
+                  activeTab === "monthly"
+                    ? "text-blue-600 border-b-2 border-blue-600 font-medium"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+                onClick={() => setActiveTab("monthly")}
+              >
+                Monthly Trend
+              </button>
+            </li>
+            <li className="mr-1">
+              <button
+                className={`inline-block py-2 px-4 ${
+                  activeTab === "weekly"
+                    ? "text-blue-600 border-b-2 border-blue-600 font-medium"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+                onClick={() => setActiveTab("weekly")}
+                disabled={!selectedMonth}
+              >
+                Weekly Trend {selectedMonth ? `(${selectedMonth})` : ""}
+              </button>
+            </li>
+          </ul>
+        </div>
+        
+        {/* Disease info card */}
+        {!loading && diseaseData && (
+          <div className="bg-blue-50 rounded-lg p-4 mb-6 border border-blue-100">
+            <div className="flex items-center">
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800">
+                  {diseaseData.disease.name}
+                </h3>
+                <p className="text-gray-600">
+                  Total of <span className="font-bold text-blue-600">{diseaseData.totalCases}</span> cases recorded between{" "}
+                  {trendStartDate.toLocaleDateString()} and {trendEndDate.toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {/* Charts */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {loading ? (
+            <div className="lg:col-span-3">
+              <Loader />
+            </div>
+          ) : (
+            <>
+              <div className="lg:col-span-2">
+                <div className="bg-gray-50 p-4 rounded-lg h-80">
+                  {activeTab === "monthly" ? (
+                    <>
+                      <h3 className="text-lg font-medium text-gray-700 mb-2">Monthly Trend</h3>
+                      <p className="text-sm text-gray-500 mb-2">Click on a bar to see weekly breakdown</p>
+                      <Bar 
+                        data={monthlyChartData} 
+                        options={{
+                          ...chartOptions,
+                          onClick: handleBarClick
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex justify-between items-center mb-2">
+                        <h3 className="text-lg font-medium text-gray-700">Weekly Trend</h3>
+                        <button 
+                          className="text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 py-1 px-2 rounded"
+                          onClick={() => setActiveTab("monthly")}
+                        >
+                          Back to Monthly View
+                        </button>
+                      </div>
+                      {weeklyChartData ? (
+                        <Line data={weeklyChartData} options={chartOptions} />
+                      ) : (
+                        <div className="flex items-center justify-center h-full text-gray-500">
+                          Select a month from the bar chart to view weekly data
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+              
+              <div className="lg:col-span-1">
+                <div className="bg-gray-50 p-4 rounded-lg h-80">
+                  <h3 className="text-lg font-medium text-gray-700 mb-2">Age Distribution</h3>
+                  <Pie 
+                    data={ageDistributionChartData} 
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      plugins: {
+                        legend: {
+                          position: "right",
+                          labels: {
+                            boxWidth: 12,
+                            padding: 10,
+                            font: {
+                              size: 11
+                            }
+                          }
+                        }
+                      }
+                    }} 
+                  />
+                </div>
+              </div>
+            </>
+          )}
+        </div>
       </div>
       
       {/* Top K Diseases Section */}
-      <div>
-        <h2>Top K Diseases</h2>
-        
-        {/* K value selector */}
-        <div>
-          <label>Top K Value:</label>
-          <input
-            type="range"
-            min="1"
-            max="10"
-            value={kValue}
-            onChange={(e) => setKValue(parseInt(e.target.value))}
-          />
-          <span>{kValue}</span>
+      <div id="topk-section" className="bg-white rounded-lg shadow-md p-6">
+        <div className="flex flex-wrap items-center justify-between mb-6">
+          <h2 className="flex items-center text-xl font-semibold text-gray-700">
+            <FaFilter className="mr-2 text-blue-500" />
+            Top K Diseases Analysis
+          </h2>
+          
+          {/* View toggle */}
+          <div className="flex">
+            <button 
+              onClick={() => setViewType("chart")} 
+              className={`px-3 py-1 rounded-l-md border ${viewType === "chart" ? "bg-blue-500 text-white border-blue-500" : "bg-white text-gray-600 border-gray-300"}`}
+            >
+              Chart View
+            </button>
+            <button 
+              onClick={() => setViewType("cards")} 
+              className={`px-3 py-1 rounded-r-md border ${viewType === "cards" ? "bg-blue-500 text-white border-blue-500" : "bg-white text-gray-600 border-gray-300"}`}
+            >
+              Card View
+            </button>
+          </div>
         </div>
         
-        {/* Date Range Pickers */}
-        <div>
-          <label>Start Date:</label>
-          <DatePicker selected={topKStartDate} onChange={(date) => setTopKStartDate(date)} />
-          <label>End Date:</label>
-          <DatePicker selected={topKEndDate} onChange={(date) => setTopKEndDate(date)} />
-        </div>
-        
-        {/* View toggle */}
-        <div>
-          <button onClick={() => setViewType("chart")}>Chart View</button>
-          <button onClick={() => setViewType("cards")}>Card View</button>
+        <div className="flex flex-wrap gap-4 mb-6">
+          {/* Date range selector */}
+          <div className="flex flex-col">
+            <label className="text-sm text-gray-600 mb-1 flex items-center">
+              <FaCalendarAlt className="mr-1 text-blue-500" />
+              Start Date:
+            </label>
+            <DatePicker
+              selected={topKStartDate}
+              onChange={date => setTopKStartDate(date)}
+              className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              dateFormat="MMMM d, yyyy"
+            />
+          </div>
+          
+          <div className="flex flex-col">
+            <label className="text-sm text-gray-600 mb-1 flex items-center">
+              <FaCalendarAlt className="mr-1 text-blue-500" />
+              End Date:
+            </label>
+            <DatePicker
+              selected={topKEndDate}
+              onChange={date => setTopKEndDate(date)}
+              className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              dateFormat="MMMM d, yyyy"
+              minDate={topKStartDate}
+            />
+          </div>
+          
+          {/* K value selector */}
+          <div className="flex flex-col">
+            <label className="text-sm text-gray-600 mb-1 flex items-center">
+              <FaFilter className="mr-1 text-blue-500" />
+              Top K Value:
+            </label>
+            <div className="flex items-center">
+              <input
+                type="range"
+                min="1"
+                max="10"
+                value={kValue}
+                onChange={(e) => setKValue(parseInt(e.target.value))}
+                className="mr-3 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+              />
+              <span className="bg-blue-100 text-blue-800 font-medium px-2.5 py-0.5 rounded">
+                {kValue}
+              </span>
+            </div>
+          </div>
         </div>
         
         {/* Top K visualization */}
-        {viewType === "chart" ? (
-          <Bar data={topKChartData} />
+        {loading ? (
+          <Loader />
+        ) : viewType === "chart" ? (
+          <div className="h-96">
+            <Bar 
+              data={topKChartData} 
+              options={{
+                ...chartOptions,
+                indexAxis: "y",
+                plugins: {
+                  ...chartOptions.plugins,
+                  tooltip: {
+                    ...chartOptions.plugins.tooltip,
+                    callbacks: {
+                      label: function(context) {
+                        return `Cases: ${context.raw} (${topKData[context.dataIndex].percentage.toFixed(1)}%)`;
+                      }
+                    }
+                  }
+                }
+              }} 
+            />
+          </div>
         ) : (
-          <div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {topKData.map((item, index) => (
               <DiseaseCard key={item.id} item={item} rank={index + 1} />
             ))}
