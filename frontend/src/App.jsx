@@ -96,7 +96,7 @@ function App() {
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/public-data" element={<PublicData />} />
 
-         {/* Role-Based Common Pages */}
+         {/* Role-Based Common Pages */}                  
          <Route element={<ProtectedRoute allowedRoles={["doctor", "nurse", "receptionist", "admin", "patient", "pathologist"]} />}>
             <Route path=":role/profile" element={<Profile />} />
           </Route>
