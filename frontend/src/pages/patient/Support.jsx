@@ -9,7 +9,7 @@ const Support = () => {
   const chatContainerRef = useRef(null);
   
   // API configuration - using environment variables
-  const API_KEY = 'YOURAPIKEY'
+  const API_KEY = ''
   const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
   useEffect(() => {
@@ -28,6 +28,24 @@ const Support = () => {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [messages]);
+  
+  // Add effect to handle keeping the chat container in view
+  useEffect(() => {
+    const handleScroll = () => {
+      // When user scrolls back down, make sure chat input stays visible
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      
+      // If we're near the bottom of the page, scroll to the bottom
+      if (documentHeight - (scrollPosition + windowHeight) < 100) {
+        window.scrollTo(0, documentHeight);
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,7 +65,9 @@ const Support = () => {
       setIsTyping(false);
       
       if (response) {
-        setMessages(prev => [...prev, { text: response, sender: 'bot' }]);
+        // Process response text to handle markdown-style formatting
+        const formattedResponse = formatBotResponse(response);
+        setMessages(prev => [...prev, { text: formattedResponse, sender: 'bot' }]);
       } else {
         setMessages(prev => [
           ...prev, 
@@ -64,8 +84,22 @@ const Support = () => {
     }
   };
 
+  // Function to format bot responses, handling asterisks and other markdown-like syntax
+  const formatBotResponse = (text) => {
+    // Parse and convert **text** to <strong>text</strong>
+    let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    
+    // Parse and convert *text* to <em>text</em> (but only if not already part of **)
+    formattedText = formattedText.replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '<em>$1</em>');
+    
+    // Handle line breaks
+    formattedText = formattedText.replace(/\n/g, '<br />');
+    
+    return formattedText;
+  };
+
   const callGeminiAPI = async (message) => {
-    console.log('Making API call to Gemini with message:', message);
+    console.log('Making API call with message:', message);
 
     // Check if API key is available
     if (!API_KEY) {
@@ -140,21 +174,20 @@ const Support = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen w-screen bg-gray-50 overflow-hidden">
-      {/* Main content area - full screen */}
-      <div className="flex-1 flex justify-center items-center">
+    <div className="flex flex-col h-screen bg-gray-50 overflow-hidden">
+      {/* Main content area - full width */}
+      <div className="flex-1 w-full h-full">
         <div className="w-full h-full bg-white overflow-hidden flex flex-col shadow-lg">
           {/* Header */}
           <div className="p-4 bg-gradient-to-r from-teal-500 to-emerald-600 text-white">
             <h1 className="text-2xl font-bold">Support Assistant</h1>
-            <p className="text-sm opacity-90">Powered by Gemini Flash</p>
           </div>
           
           {/* Chat messages container */}
           <div 
             ref={chatContainerRef}
-            className="flex-1 p-6 overflow-y-auto flex flex-col space-y-6"
-            style={{ height: 'calc(100vh - 140px)', backgroundImage: 'radial-gradient(circle at center, #f3f4f6 1px, transparent 1px)', backgroundSize: '20px 20px' }}
+            className="flex-1 p-6 overflow-y-auto flex flex-col space-y-6 h-full"
+            style={{ flex: '1 1 auto', backgroundImage: 'radial-gradient(circle at center, #f3f4f6 1px, transparent 1px)', backgroundSize: '20px 20px' }}
           >
             {messages.map((msg, index) => (
               <div 
@@ -175,8 +208,13 @@ const Support = () => {
                         ? 'bg-emerald-50 hover:bg-emerald-100 text-gray-800 border-emerald-200 border' 
                         : 'bg-white hover:bg-gray-50 text-gray-800 border-teal-200 border'
                     }`}
+                    dangerouslySetInnerHTML={
+                      msg.sender === 'bot' 
+                        ? { __html: msg.text } 
+                        : undefined
+                    }
                   >
-                    {msg.text}
+                    {msg.sender === 'user' ? msg.text : null}
                   </div>
                 </div>
               </div>
@@ -201,8 +239,8 @@ const Support = () => {
             )}
           </div>
           
-          {/* Input area */}
-          <div className="border-t p-4 bg-white">
+          {/* Input area - fixed to bottom */}
+          <div className="border-t p-4 bg-white sticky bottom-0 left-0 right-0 w-full">
             <form onSubmit={handleSubmit} className="flex items-center gap-3">
               <input
                 type="text"
