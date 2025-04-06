@@ -1,36 +1,5 @@
 import {Consultation,Feedback} from '../models/consultation.js';
 import {Room,DailyOccupancy} from '../models/facility.js';
-// import mongoose from 'mongoose';
-
-// const insertSampleConsultation = async () => {
-//     await mongoose.connect('mongodb+srv://devikareddi1203:LMMNXQqC4s7KL25j@cluster0.xtsrwwj.mongodb.net/', {
-//         useNewUrlParser: true,
-//         useUnifiedTopology: true
-//     });
-
-//     const newConsultation = new Consultation({
-//         patient_id: '60c72b2f9b1d8b0012345678',
-//         doctor_id: '60c72b2f9b1d8b0012345679',
-//         dept_id:   '60c72b2f9b1d8b0012367890',
-//         appointment_date: new Date('2025-04-01'),
-//         start_time: '10:00 AM',
-//         status: 'scheduled',
-//         reason: 'Routine check-up',
-//         created_by: '60c72b2f9b1d8b0012345680',
-//         diagnosis: ['Cold'],
-//         feedback: {
-//             rating: 5,
-//             comments: 'Great service!'
-//         }
-//     });
-
-//     await newConsultation.save();
-//     console.log('Sample consultation added successfully');
-//     mongoose.connection.close();
-// };
-
-// insertSampleConsultation();
-
 
 // Function to add rating and review
 export const addRatingAndReview = async (req, res) => {
