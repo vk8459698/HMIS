@@ -8,7 +8,7 @@ const BillItemSchema = new Schema({
   },
   consult_id: { type: Schema.Types.ObjectId, ref: 'Consultation' },
   report_id: { type: Schema.Types.ObjectId, ref: 'Report' },
-  prescription_id: { type: Schema.Types.ObjectId, ref: 'Prescription' },
+  prescription_id: { type: Number, ref: 'Prescription' },
   room_id: { type: Schema.Types.ObjectId, ref: 'Room' },
   item_description: String,
   item_amount: Number,
@@ -27,7 +27,7 @@ const PaymentSchema = new Schema({
   });
   
   const BillSchema = new Schema({
-    patient_id: { type: Schema.Types.ObjectId, ref: 'Patient' },
+    patient_id: { type: Number, ref: 'Patient' },
     generation_date: Date,
     total_amount: Number,
     payment_status: {
