@@ -1,6 +1,6 @@
 import Patient from '../models/patient.js';
-import models from '../models/consultation.js';
-const { Consultation } = models;
+import { Consultation } from '../models/consultation.js';
+
 
 // @desc Get full patient profile
 export const FetchPatientProfile = async (req, res) => {
