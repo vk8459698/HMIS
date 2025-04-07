@@ -1,6 +1,7 @@
 import Patient from '../models/patient.js';
 import { Consultation } from '../models/consultation.js';
-
+import { Doctor } from '../models/staff.js';
+import Employee from '../models/employee.js'; 
 
 // @desc Get full patient profile
 export const FetchPatientProfile = async (req, res) => {
@@ -40,3 +41,30 @@ export const fetchConsultations = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+
+// @route   GET /api/doctors
+const getAllDoctors = async (req, res) => {
+  try {
+    // Find all documents in the Doctor collection
+    // Populate the 'employee_id' field to get associated employee details
+    const doctors = await Doctor.find({}).populate({
+      path: 'employee_id',
+      model: Employee, // Specify the Employee model
+      select: 'name email phone_number address' 
+    });
+
+    if (doctors.length === 0) {
+      return res.status(404).json({ message: 'No doctors found' });
+    }
+
+    res.status(200).json(doctors);
+  } catch (error) {
+    console.error('Error fetching doctors:', error);
+    res.status(500).json({ message: 'Server error fetching doctors' });
+  }
+};
+
+export {
+  getAllDoctors,
+};
+
