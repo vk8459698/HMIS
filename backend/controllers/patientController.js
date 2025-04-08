@@ -7,7 +7,7 @@ import Employee from '../models/employee.js';
 export const FetchPatientProfile = async (req, res) => {
   try {
     const { patientId } = req.params;
-    const patient = await Patient.findById(patientId).populate('insurance_details');
+    const patient = await Patient.findById(patientId);
 
     if (!patient) {
       return res.status(404).json({ message: 'Patient not found' });
@@ -25,11 +25,6 @@ export const fetchConsultations = async (req, res) => {
 
     // Assuming patientId is ObjectId, use patient_id field in Consultation
     const consultations = await Consultation.find({ patient_id: patientId })
-      .populate('doctor_id', 'name specialization') // doctor info
-      .populate('created_by', 'name role') // receptionist info
-      .populate('diagnosis')
-      .populate('prescription') // fetching prescriptions
-      .populate('bill_id') // bill info if needed
       .sort({ booked_date_time: -1 }); // newest first
 
     if (!consultations.length) {
