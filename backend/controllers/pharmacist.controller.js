@@ -7,7 +7,7 @@ let Patient;
 try {
   Patient = mongoose.model('Patient');
 } catch (e) {
-  Patient = await import('../models/Patient.js').then(mod => mod.default);
+  Patient = await import('../models/patient.js').then(mod => mod.default);
 }
 
 export const searchPatientPrescriptions = async (req, res) => {
